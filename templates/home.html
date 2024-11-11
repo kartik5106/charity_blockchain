@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blockchain</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Slab', sans-serif;
+            background-color: #E6E6FA; /* Pastel lilac background */
+            color: #6A5ACD; /* Soft purple text */
+        }
+
+        .top-nav {
+            background-color: #D8BFD8; /* Light pastel lilac */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .top-nav a {
+            color: #6A5ACD;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .top-nav a:hover {
+            background-color: #BBA3D0; /* Slightly darker lilac on hover */
+            color: #FFFFFF;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            font-size: 3rem;
+            color: #6A5ACD;
+            margin-top: 100px; /* Add margin to ensure it's below the navbar */
+        }
+
+        #floatingText {
+            position: relative;
+            bottom: 0;
+            left: 50%;
+            text-align: center;
+            transform: translateX(-50%);
+            font-size: 24px;
+            opacity: 0.9;
+            padding: 5% 5%;
+            color: #6A5ACD;
+        }
+
+        .card {
+            background: #FFF;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #6A5ACD;
+        }
+
+        .card p {
+            color: #6A5ACD;
+            margin-bottom: 20px;
+        }
+
+        .card a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #DDA0DD; /* Pastel purple button */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .card a:hover {
+            background: #CDA4DE; /* Darker pastel purple */
+        }
+
+        .footer {
+            background: rgba(218, 112, 214, 0.8); /* Pastel lilac with transparency */
+            color: #ffffff;
+            text-align: center;
+            padding: 70px 0;
+        }
+
+        .footer-col h4 {
+            font-size: 18px;
+            color: #ffffff;
+        }
+
+        .footer-col ul li a {
+            color: #E6E6FA;
+        }
+
+        .footer-col ul li a:hover {
+            color: #ffffff;
+            padding-left: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+  <nav class="top-nav">
+    <div class="container">
+      <ul>
+        <li class="left-align">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="QR Code" style="max-width: 80px; max-height: 60px;">
+          <h3 style="color: #6A5ACD;">Charity blockchain</h3>
+        </li>
+        <li class="right-align"><a href="#">Home</a></li>
+        <li class="right-align"><a href="about.html">About</a></li>
+        <li class="right-align"><a href="#">Services</a></li>
+        <li class="right-align"><a href="#">Portfolio</a></li>
+        <li class="right-align"><a href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <h1>Be Someone's Reason to Smile</h1>
+
+  <div id="floatingText">Welcome to our donation website dedicated to alleviating hunger among children...</div>
+
+  <div class="card">
+    <h2>Donate Now</h2>
+    <p><i>"An individual's donation holds the power to transform lives..."</i></p>
+    <p>Your support can make a difference in someone's life. Click the button below to donate.</p>
+    <a href="{{ url_for('payment') }}" target="_blank" rel="noopener">Donate</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="cot">
+      <div class="rw">
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Services</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <!-- Repeat for other footer columns -->
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

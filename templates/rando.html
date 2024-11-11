@@ -1,0 +1,440 @@
+<html>
+  <head>
+    <title>Payment APP</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+    <style>
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2e2e2e;
+            padding: 25px;
+            border: 1px solid #444;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            color: #ffffff;
+            z-index: 9999;
+            text-align: center;
+          }
+          
+          #popup h2 {
+            color: #ffeb3b;
+            margin-bottom: 15px;
+          }
+          
+          #popup button {
+            background-color: #1e88e5;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+          }
+          
+          #popup button:hover {
+            background-color: #1565c0;
+          }
+          
+          /* Styling for Card */
+          .card {
+            background: rgba(50, 50, 50, 0.8);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            color: #f5f5f5;
+            padding: 40px;
+            width: 75%;
+            text-align: center;
+          }
+          
+          .card h1 {
+            color: #ffeb3b;
+            font-size: 2em;
+            margin-bottom: 20px;
+          }
+          
+          .custom-btn2 {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            color: #ffffff;
+            background: linear-gradient(45deg, #1e88e5, #42a5f5);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin: 5px;
+          }
+          
+          .custom-btn2:hover {
+            background: linear-gradient(45deg, #1565c0, #1e88e5);
+          }
+          
+          /* Styling for Top Donors Section */
+          .top-donors {
+            position: absolute;
+            top: 40px;
+            right: 1400px;
+            width: 320px;
+            padding: 20px;
+            background-color: #333333;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            color: #f5f5f5;
+          }
+          
+          .top-donors h3 {
+            text-align: center;
+            font-size: 1.5em;
+            color: #ffeb3b;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+          }
+          
+          .donor-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+          }
+          
+          .donor-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background: #444;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            color: #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+          }
+          
+          .donor-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          }
+          
+          .donor-name {
+            font-weight: bold;
+            color: #90caf9;
+          }
+          
+          .donor-amount {
+            font-weight: bold;
+            color: #81c784;
+          }
+          
+          /* General Input Styling */
+          input[type="text"],
+          select {
+            width: 300px;
+            height: 40px;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 25px;
+            border: 1px solid #555;
+            background-color: #f5f5f5;
+            color: #333;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+          }
+          
+          input[type="text"]:focus,
+          select:focus {
+            border-color: #1e88e5;
+          }
+          
+          #transferFunds {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            color: #ffffff;
+            background: linear-gradient(45deg, #ff5722, #f4511e);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+          }
+          
+          #transferFunds:hover {
+            background: linear-gradient(45deg, #e64a19, #d84315);
+          }
+
+          .charity-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+          }
+        
+          /* Style for each charity card */
+          .charity-card {
+            width: 200px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #1a1a2e;
+            color: #f0f0f0;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+        
+          .charity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+          }
+        
+          /* Image style */
+          .charity-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+          }
+        
+          /* Charity title style */
+          .charity-card h4 {
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: #00bfff;
+          }
+        
+          /* Charity description style */
+          .charity-card p {
+            font-size: 0.9em;
+            color: #cccccc;
+          }
+
+ 
+    </style>
+  </head>
+  <body style="background-color:#FAF0E6"><br>
+    <center>
+      <div class="card">
+        <h1>Welcome to Crypto Payment System!</h1>
+        <button id='connectWallet' onclick=""class="custom-btn2">Connect Wallet</button>
+        <button id='getBalance' onclick="checkBalance()"class="custom-btn2">Get Balance of Wallet</button>
+
+        <p id="walletAddress"></p>
+        <p id="walletBalance"></p>
+
+
+         <!-- New input fields for donor details and charity selection -->
+         <input type="text" id="donorName" placeholder="Enter Donor Name" style="width: 300px; height: 40px; padding: 15px; font-size: 18px; border-radius: 25px;"><br><br>
+        
+         <select id="charitySelect" style="width: 300px; height: 40px; padding: 10px; font-size: 18px; border-radius: 25px;" onchange="updateRecipientAddress()">
+             <option value="charity1">Saint Peter's Orphanage</option>
+             <option value="charity2">Makal Old Age Home</option>
+             <option value="charity3">Workers Union</option>
+           </select><br><br>
+         
+         <div class="charity-container">
+         <div class="charity-card" onclick="selectCharity('charity1', '0x5c5e9dfed62b8c58555a094813e8ff2a8216c2be')","updateRecipientAddress()">
+           <img src="static\images\orphanage.png" alt="Saint Peter's Orphanage">
+           <h4>Saint Peter's Orphanage</h4>
+           <p>Providing shelter and education for underprivileged children.</p>
+         </div>
+       
+         <div class="charity-card" onclick="selectCharity('charity2', '0x4f5e9ddec62b8c5c3455a098813eff2a8246d2be')","updateRecipientAddress()">
+           <img src="static/images/oldage.png" alt="Makal Old Age Home">
+           <h4>Makal Old Age Home</h4>
+           <p>Caring for elderly citizens with love and respect.</p>
+         </div>
+       
+         <div class="charity-card" onclick="selectCharity('charity3', '0x9f4e9dfed62b8c5e8555a098813eff2a8231c4ae')","updateRecipientAddress()">
+           <img src="static\images\worker.png" alt="Workers Union">
+           <h4>Workers Union</h4>
+           <p>Supporting workers' rights and welfare programs.</p>
+         </div>
+       </div>
+        <!-- New input fields for transfer -->
+        
+        <input type="text" id="recipientAddress" placeholder="Recipient Address" value="0x5c5e9dfed62b8c58555a094813e8ff2a8216c2be" disabled="disabled"><br><br>
+        <input type="text" id="transferAmount" placeholder="Enter Amount"style="width: 300px;
+            height: 40px;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 25px;
+            " ><br><br>
+        <button id='transferFunds' onclick="transferFunds()" Style="
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 16px;
+        color: #ffffff;
+        background: linear-gradient(45deg, #007bff, #00bfff);
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        ">Transfer Funds</button>
+        <p id="transferStatus"></p>
+        <p>-----OR-----</p>
+        <p>If you dont have a account</p>
+        <img src="{{ url_for('static', filename='images/QR.png') }}"  style="max-width: 150px;max-height: 150px;" alt="QR Code">
+        <p>Else, click <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn">here</a>.</p>
+      </div>
+
+      <div class="top-donors">
+        <h3>Top 5 Donors</h3>
+        <ul class="donor-list" id="donorList"></ul>
+      </div>
+      <!--Code for POPUP -->
+      <div id="popup">
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_6LimOm.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"    autoplay></lottie-player>
+        <h2>Transaction Details</h2>
+        <p id="popupAmount"></p>
+        <p id="popupTxId"></p>
+        <button class="custom-btn btn-5" onclick="copyTxId()">Copy</button> <!-- New button -->
+        <button class="custom-btn btn-5" onclick="closePopup()">Close</button>
+      </div>
+
+     <!-- ... Existing HTML code ... -->
+
+<script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+
+<script type="text/javascript">
+    const donors = [];
+  // Define a global variable to store the user's wallet address
+  window.userWalletAddress = null;
+  const connectWallet = document.getElementById('connectWallet');
+  const walletAddress = document.getElementById('walletAddress');
+  const walletBalance = document.getElementById('walletBalance');
+  const popup = document.getElementById('popup');
+  const popupAmount = document.getElementById('popupAmount');
+  const popupTxId = document.getElementById('popupTxId');
+
+  // Function to connect the wallet with MetaMask and initialize Web3
+  async function connectWalletwithMetaMask() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+
+      try {
+        // Request access to the user's accounts
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+        window.userWalletAddress = accounts[0];
+        walletAddress.innerText = window.userWalletAddress;
+
+        connectWallet.innerText = 'Sign Out';
+        connectWallet.removeEventListener('click', connectWalletwithMetaMask);
+        setTimeout(() => {
+          connectWallet.addEventListener('click', signOutOfMetaMask);
+        }, 200);
+      } catch (error) {
+        console.error('Failed to connect to wallet:', error);
+      }
+    } else {
+      console.error('Web3 not available.');
+    }
+  }
+
+  // Function to sign out of MetaMask
+  function signOutOfMetaMask() {
+    window.userWalletAddress = null;
+    walletAddress.innerText = '';
+    connectWallet.innerText = 'Connect Wallet';
+
+    connectWallet.removeEventListener('click', signOutOfMetaMask);
+    setTimeout(() => {
+      connectWallet.addEventListener('click', connectWalletwithMetaMask);
+    }, 200);
+  }
+
+  // Function to check the wallet balance
+  async function checkBalance() {
+    if (window.userWalletAddress) {
+      try {
+        const balance = await window.web3.eth.getBalance(window.userWalletAddress);
+        walletBalance.innerText = window.web3.utils.fromWei(balance, 'ether');
+      } catch (error) {
+        console.error('Failed to get wallet balance:', error);
+      }
+    }
+  }
+
+  // Function to transfer funds
+  async function transferFunds() {
+    const recipientAddress = document.getElementById('recipientAddress').value;
+    const transferAmount = document.getElementById('transferAmount').value;
+    const donorName = document.getElementById('donorName').value; 
+    if (!recipientAddress || !transferAmount) {
+      return;
+    }
+
+    if (window.userWalletAddress) {
+      try {
+        const transactionParameters = {
+          from: window.userWalletAddress,
+          to: recipientAddress,
+          value: window.web3.utils.toWei(transferAmount, 'ether')
+        };
+
+        const txHash = await window.web3.eth.sendTransaction(transactionParameters);
+        // Display the transaction details in the popup
+        popupAmount.innerText = `Amount: ${transferAmount} ETH`;
+        //popupTxId.innerText = `Transaction ID: ${txHash}`;
+        popup.style.display = 'block';
+        
+        console.log("transaction done");
+        donors.push({ donorName, amount: transferAmount });
+        donors.sort((a, b) => b.amount - a.amount);
+        updateTopDonors();
+
+        console.log("function called done");
+        
+      } catch (error) {
+        document.getElementById('transferStatus').innerText = `Error: ${error.message}`;
+      }
+    } else {
+      console.error('Wallet not connected.');
+    }
+  }
+
+  function updateTopDonors() {
+    const donorList = document.getElementById('donorList');
+    donorList.innerHTML = '';
+    console.log("in the updatedonars func");
+    for (let i = 0; i < Math.min(donors.length, 5); i++) {
+      const donorItem = document.createElement('li');
+      donorItem.classList.add('donor-item');
+      donorItem.innerText = `${donors[i].donorName}: ${donors[i].amount} ETH`;
+      donorList.appendChild(donorItem);
+    }
+  }
+  // Function to close the popup
+  function closePopup() {
+    popup.style.display = 'none';
+  }
+
+  // Event listener when the DOM content is loaded to check if MetaMask is installed
+  window.addEventListener('DOMContentLoaded', () => {
+    connectWallet.addEventListener('click', connectWalletwithMetaMask);
+    checkBalance();
+
+    // Add event listeners to the buttons
+    document.getElementById('checkBalanceBtn').addEventListener('click', checkBalance);
+    document.getElementById('transferFundsBtn').addEventListener('click', transferFunds);
+    document.getElementById('closePopupBtn').addEventListener('click', closePopup);
+  });
+
+
+   function copyTxId() {
+    const txId = popupTxId.innerText;
+    navigator.clipboard.writeText(txId)
+      .then(() => {
+        alert('Transaction ID copied to clipboard!');
+      })
+      .catch((error) => {
+        console.error('Failed to copy transaction ID:', error);
+      });
+  }
+</script>
+
+    </center>
+  </body>
+</html>
